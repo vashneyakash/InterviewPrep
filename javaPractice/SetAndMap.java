@@ -58,5 +58,14 @@ public class SetAndMap {
             System.out.println("Yes Jumbo is a student");
         }
         System.out.println("Is Aman is a student? " + students.contains("Aman"));
+
+        Map<String, Student> mapper = new HashMap<>();
+        mapper.put("Alice", new Student("Alice", 90, 95,93));
+        mapper.put("Jack", new Student("Jack", 60, 75,87));
+        mapper.put("Jumbo", new Student("Jumbo", 99, 93,98));
+        System.out.println("Does mapper contains : " + mapper.containsKey("Anurag"));
+        System.out.println("Does mapper contains : " + mapper.containsKey("Jack"));
+        System.out.println("Does mapper contains : " + mapper.get("Jack"));
+        System.out.println("Does mapper contains : " + mapper.get("Anurag"));
     }
 }
