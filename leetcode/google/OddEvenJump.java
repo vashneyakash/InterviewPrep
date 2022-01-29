@@ -18,4 +18,25 @@ public class OddEvenJump {
     *       int x
     *       return check(x)
     */
+
+    /*
+    * Second approach :
+    * We will maintain 2 boolean arrays, 1st array isEndReachableUsingOddJump. that will signify that we can reach to end using odd jump from this index
+    * 2nd array isEndReachableUsingEvenJump, that will signify that we can reach to end using even jump from this index
+    *
+    * We will also maintain nextGreaterOrEqualElement array, that will contain the index of the element that is equal or greater than this element after this element in the array
+    * We will also maintain nextSmallerOrEqualElement array, that will contain the index of the element that is equal or smaller than this element after this element in the array
+    *
+    * for each index:
+    *   if (!visited[index]) {
+    *       checkReachability(index, jumpData);
+    *   }
+    *
+    * int cnt = 0
+    * for each index:
+    *   if (isEndReachableUsingOddJump[index]):
+    *       cnt = cnt + 1
+    *
+    * print(cnt)
+    * */
 }
