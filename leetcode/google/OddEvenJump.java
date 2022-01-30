@@ -1,5 +1,7 @@
 package google;
 
+import java.util.*;
+
 public class OddEvenJump {
     /*
     * Brute Force Approach :
@@ -39,4 +41,29 @@ public class OddEvenJump {
     *
     * print(cnt)
     * */
+
+    class OddEvenJumpData {
+        private final List<Integer> values;
+        private final List<Integer> nextGreaterOrEqualElement;
+        private final List<Integer> nextSmallerOrEqualElement;
+        private final List<Boolean> isEndReachableUsingOddJump;
+        private final List<Boolean> isEndReachableUsingEvenJump;
+
+        public OddEvenJumpData(List<Integer> values) {
+            this.values = values;
+            this.nextGreaterOrEqualElement = new ArrayList<>(values.size());
+            this.nextSmallerOrEqualElement = new ArrayList<>(values.size());
+            this.isEndReachableUsingOddJump = new ArrayList<>(values.size());
+            this.isEndReachableUsingEvenJump = new ArrayList<>(values.size());
+            preProcess();
+        }
+
+        private void preProcess() {
+            TreeMap<Integer, Integer> valueToIndexMap = new TreeMap<>();
+            for (int index = values.size() - 1; index >= 0; index--) {
+//                if (valueToIndexMap.ceilingEntry())
+                valueToIndexMap.put(values.get(index), index);
+            }
+        }
+    }
 }
