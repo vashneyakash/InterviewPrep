@@ -67,5 +67,41 @@ public class SetAndMap {
         System.out.println("Does mapper contains : " + mapper.containsKey("Jack"));
         System.out.println("Does mapper contains : " + mapper.get("Jack"));
         System.out.println("Does mapper contains : " + mapper.get("Anurag"));
+
+
+        System.out.println("Tree Map ========");
+        TreeMap<Integer, Integer> valueToIndexMap = new TreeMap<>();
+        valueToIndexMap.put(100, 1);
+        valueToIndexMap.put(500, 2);
+        valueToIndexMap.put(50, 3);
+        valueToIndexMap.put(400, 4);
+        valueToIndexMap.put(70, 5);
+        valueToIndexMap.put(130, 6);
+        valueToIndexMap.put(200, 7);
+        valueToIndexMap.put(230, 8);
+
+        System.out.println("key is 199 : " + valueToIndexMap.ceilingEntry(199));
+        System.out.println("key is 200 : " + valueToIndexMap.ceilingEntry(200));
+        System.out.println("key is 201 : " + valueToIndexMap.ceilingEntry(201));
+        System.out.println("key is 500 : " + valueToIndexMap.ceilingEntry(500));
+        System.out.println("key is 501 : " + valueToIndexMap.ceilingEntry(501));
+        System.out.println("key is -100 : " + valueToIndexMap.ceilingEntry(-100));
+
+        System.out.println("Celling keys are ========");
+        System.out.println("key is 199 : " + valueToIndexMap.ceilingKey(199));
+        System.out.println("key is 200 : " + valueToIndexMap.ceilingKey(200));
+        System.out.println("key is 201 : " + valueToIndexMap.ceilingKey(201));
+        System.out.println("key is 500 : " + valueToIndexMap.ceilingKey(500));
+        System.out.println("key is 501 : " + valueToIndexMap.ceilingKey(501));
+        System.out.println("key is -100 : " + valueToIndexMap.ceilingKey(-100));
+
+        System.out.println("Floor entry ===========");
+        System.out.println("key is 199 : " + valueToIndexMap.floorEntry(199));
+        System.out.println("key is 200 : " + valueToIndexMap.floorEntry(200));
+        System.out.println("key is 201 : " + valueToIndexMap.floorEntry(201));
+        System.out.println("key is 500 : " + valueToIndexMap.floorEntry(500));
+        System.out.println("key is 501 : " + valueToIndexMap.floorEntry(501));
+        System.out.println("key is -100 : " + valueToIndexMap.floorEntry(-100));
+        System.out.println("key is 50 : " + valueToIndexMap.floorEntry(50));
     }
 }
