@@ -55,15 +55,41 @@ public class OddEvenJump {
             this.nextSmallerOrEqualElement = new ArrayList<>(values.size());
             this.isEndReachableUsingOddJump = new ArrayList<>(values.size());
             this.isEndReachableUsingEvenJump = new ArrayList<>(values.size());
+
+            for (int index = 0; index < values.size(); index++) {
+                this.nextGreaterOrEqualElement.add(null);
+                this.nextSmallerOrEqualElement.add(null);
+                this.isEndReachableUsingOddJump.add(null);
+                this.isEndReachableUsingEvenJump.add(null);
+            }
             preProcess();
+            int cnt = 0;
+            for (int index = 0; index < values.size(); index++) {
+                cnt = cnt + (algoRun(index, true) ? 1 : 0);
+            }
         }
 
         private void preProcess() {
             TreeMap<Integer, Integer> valueToIndexMap = new TreeMap<>();
             for (int index = values.size() - 1; index >= 0; index--) {
-//                if (valueToIndexMap.ceilingEntry())
+                if (valueToIndexMap.ceilingEntry(values.get(index)) != null) {
+                    this.nextGreaterOrEqualElement.set(index, valueToIndexMap.ceilingEntry(values.get(index)).getValue());
+                }
+                if (valueToIndexMap.floorEntry(values.get(index)) != null) {
+                    this.nextSmallerOrEqualElement.set(index, valueToIndexMap.floorEntry(values.get(index)).getValue());
+                }
                 valueToIndexMap.put(values.get(index), index);
             }
+        }
+
+        private boolean algoRun(int index, boolean oddJump) {
+            if (index >= values.size()-1) {
+                return true;
+            }
+            if (this.isEndReachableUsingOddJump.get(index) != null) {
+                return this.isEndReachableUsingOddJump.get(index);
+            }
+
         }
     }
 }
