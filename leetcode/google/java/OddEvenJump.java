@@ -1,4 +1,4 @@
-package google;
+package google.java;
 
 import java.util.*;
 
@@ -12,22 +12,22 @@ public class OddEvenJump {
     *   if (start == end):
     *       return true
     *   if (start%2 == 0):
-    *       get smallest element in array that in smaller or equal to this number
+    *       get smallest element in java.array that in smaller or equal to this number
     *       int x
     *       return check(x)
     *   else:
-    *       get just greater than this element in the array
+    *       get just greater than this element in the java.array
     *       int x
     *       return check(x)
     */
 
     /*
     * Second approach :
-    * We will maintain 2 boolean arrays, 1st array isEndReachableUsingOddJump. that will signify that we can reach to end using odd jump from this index
-    * 2nd array isEndReachableUsingEvenJump, that will signify that we can reach to end using even jump from this index
+    * We will maintain 2 boolean arrays, 1st java.array isEndReachableUsingOddJump. that will signify that we can reach to end using odd jump from this index
+    * 2nd java.array isEndReachableUsingEvenJump, that will signify that we can reach to end using even jump from this index
     *
-    * We will also maintain nextGreaterOrEqualElement array, that will contain the index of the element that is equal or greater than this element after this element in the array
-    * We will also maintain nextSmallerOrEqualElement array, that will contain the index of the element that is equal or smaller than this element after this element in the array
+    * We will also maintain nextGreaterOrEqualElement java.array, that will contain the index of the element that is equal or greater than this element after this element in the java.array
+    * We will also maintain nextSmallerOrEqualElement java.array, that will contain the index of the element that is equal or smaller than this element after this element in the java.array
     *
     * for each index:
     *   if (!visited[index]) {
@@ -89,7 +89,7 @@ public class OddEvenJump {
             if (this.isEndReachableUsingOddJump.get(index) != null) {
                 return this.isEndReachableUsingOddJump.get(index);
             }
-
+            return false;
         }
     }
 }
