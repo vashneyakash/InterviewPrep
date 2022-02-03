@@ -89,8 +89,11 @@ public class OddEvenJump {
         if (index >= values.size() - 1) {
             return true;
         }
-        if (this.isEndReachableUsingOddJump.get(index) != null) {
+        if (oddJump && this.isEndReachableUsingOddJump.get(index) != null) {
             return this.isEndReachableUsingOddJump.get(index);
+        }
+        if (!oddJump && this.isEndReachableUsingEvenJump.get(index) != null) {
+            return this.isEndReachableUsingEvenJump.get(index);
         }
         boolean isEndReachable = false;
         if (oddJump) {
@@ -108,7 +111,7 @@ public class OddEvenJump {
     }
 
     public static void main(String[] args) {
-        int[] arr = {10,13,12,14,15};
+        int[] arr = {1,2,3,2,1,4,4,5};
         List<Integer> newArr = new ArrayList<>(arr.length);
         for (int j : arr) {
             newArr.add(j);
