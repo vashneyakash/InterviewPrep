@@ -1,5 +1,8 @@
 package google.java;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CrackTheSafe {
     /*
     * Possible solution:
@@ -9,4 +12,26 @@ public class CrackTheSafe {
     *   2.2 Second copy should be sorted using suffix and its length
     * 3. Retrieve sequences 1 by 1 from both the seq and merge them and delete them from seq
     * */
+
+    private final int passwordSize;
+    private final int alphabetCount;
+    private final List<String> allPossibleSequences;
+    public CrackTheSafe(int passwordSize, int alphabetCount) {
+        this.passwordSize = passwordSize;
+        this.alphabetCount = alphabetCount;
+        this.allPossibleSequences = new ArrayList<>();
+        generateAllPossibleSequences(new StringBuffer());
+    }
+
+    private void generateAllPossibleSequences(StringBuffer sequence) {
+        if (sequence.length() == this.passwordSize) {
+            allPossibleSequences.add(sequence.toString());
+        } else {
+            for (int alphabet = 0; alphabet < this.alphabetCount; alphabet++) {
+               sequence.append(alphabet);
+               generateAllPossibleSequences(sequence);
+               sequence.deleteCharAt(sequence.length() - 1);
+            }
+        }
+    }
 }
