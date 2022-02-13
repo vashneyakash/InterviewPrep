@@ -1,7 +1,6 @@
 package google.java;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class CrackTheSafe {
     /*
@@ -15,23 +14,42 @@ public class CrackTheSafe {
 
     private final int passwordSize;
     private final int alphabetCount;
-    private final List<String> allPossibleSequences;
+    private final int allPossiblePasswordCount;
     public CrackTheSafe(int passwordSize, int alphabetCount) {
         this.passwordSize = passwordSize;
         this.alphabetCount = alphabetCount;
-        this.allPossibleSequences = new ArrayList<>();
-        generateAllPossibleSequences(new StringBuffer());
+        this.allPossiblePasswordCount = (int) Math.pow(alphabetCount, passwordSize);
+
     }
 
-    private void generateAllPossibleSequences(StringBuffer sequence) {
-        if (sequence.length() == this.passwordSize) {
-            allPossibleSequences.add(sequence.toString());
-        } else {
-            for (int alphabet = 0; alphabet < this.alphabetCount; alphabet++) {
-               sequence.append(alphabet);
-               generateAllPossibleSequences(sequence);
-               sequence.deleteCharAt(sequence.length() - 1);
-            }
+    public String generatePassword() {
+        Set<String> visitedPasswords = new HashSet<>();
+        String startingPassword = String.join("", Collections.nCopies(passwordSize, "0"));
+        StringBuffer password = new StringBuffer();
+        visitedPasswords.add(startingPassword);
+        tryAllCombinations(password, visitedPasswords);
+        return password.toString();
+    }
+
+    private boolean tryAllCombinations(StringBuffer currentPassword, Set<String> visitedPasswords) {
+        if (visitedPasswords.size() == allPossiblePasswordCount) {
+            return true;
         }
+        StringBuilder lastPassword_N_MinusOneDigits = new StringBuilder(currentPassword.substring(currentPassword.length() - passwordSize + 1, currentPassword.length()));
+        for (int alphabet = 0; alphabet < this.alphabetCount; alphabet++) {
+            lastPassword_N_MinusOneDigits.append(alphabet);
+            if (!visitedPasswords.contains(lastPassword_N_MinusOneDigits.toString())) {
+                visitedPasswords.add(lastPassword_N_MinusOneDigits.toString());
+                currentPassword.append(alphabet);
+                if (tryAllCombinations(currentPassword, visitedPasswords)) {
+                    return true;
+                } else {
+                    visitedPasswords.remove(lastPassword_N_MinusOneDigits.toString());
+                    currentPassword.deleteCharAt(currentPassword.length() - 1);
+                }
+            }
+            lastPassword_N_MinusOneDigits.deleteCharAt(passwordSize - 1);
+        }
+        return false;
     }
 }
