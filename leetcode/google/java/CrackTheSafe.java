@@ -25,7 +25,7 @@ public class CrackTheSafe {
     public String generatePassword() {
         Set<String> visitedPasswords = new HashSet<>();
         String startingPassword = String.join("", Collections.nCopies(passwordSize, "0"));
-        StringBuffer password = new StringBuffer();
+        StringBuffer password = new StringBuffer(startingPassword);
         visitedPasswords.add(startingPassword);
         tryAllCombinations(password, visitedPasswords);
         return password.toString();
@@ -51,5 +51,10 @@ public class CrackTheSafe {
             lastPassword_N_MinusOneDigits.deleteCharAt(passwordSize - 1);
         }
         return false;
+    }
+
+    public static void main(String[] args) {
+        CrackTheSafe crackTheSafe = new CrackTheSafe(1, 2);
+        System.out.println(crackTheSafe.generatePassword());
     }
 }
