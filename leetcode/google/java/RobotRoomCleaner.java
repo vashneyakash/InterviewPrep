@@ -6,6 +6,10 @@ public class RobotRoomCleaner {
     * Start with current cell, do dfs, maintain visited set
     * try all possible directions. If no move left backtrack
     * */
+    private final Coordinate robotStartCoordinates;
+    public RobotRoomCleaner(Coordinate robotStartCoordinates) {
+        this.robotStartCoordinates = robotStartCoordinates;
+    }
 
     public static class Coordinate {
         private final int x;
