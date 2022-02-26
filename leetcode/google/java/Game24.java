@@ -1,6 +1,8 @@
 package google.java;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Game24 {
     /*
@@ -20,6 +22,14 @@ public class Game24 {
     }
 
     public boolean isGame24Possible() {
+        getAllPossibleOperatorCombinations();
+
+
+
+        return false;
+    }
+
+    private void getAllPossibleOperatorCombinations() {
         for (Operators firstOperator : Operators.values()) {
             for (Operators secondOperator : Operators.values()) {
                 for (Operators thirdOperator : Operators.values()) {
@@ -29,8 +39,40 @@ public class Game24 {
                 }
             }
         }
+    }
 
-        return false;
+    private void evaluateAllOperations(List<Integer> arguments, List<Operators> operators, int operationIndex) {
+        for (int i=0; i<arguments.size(); i++) {
+            for (int j=0; j<arguments.size(); j++) {
+                if (i!=j) {
+                    int ans = calOperation(arguments.get(i), arguments.get(j), operators.get(operationIndex));
+                    evaluateAllOperations(IntStream
+                            .range(0, arguments.size())
+                            .filter(index -> index != i && index != j)
+                            .map(arguments::get)
+                            .collect(Collectors.toList()), operators, operationIndex++);
+);
+                }
+            }
+        }
+    }
+
+    int calOperation(int a, int b, Operators operator) {
+        switch (operator) {
+            case plus -> {
+                return a + b;
+            }
+            case minus -> {
+                return a - b;
+            }
+            case multiply -> {
+                return a * b;
+            }
+            case divide -> {
+                return a / b;
+            }
+        }
+        return 0;
     }
 
     public enum Operators {
