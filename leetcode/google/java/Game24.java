@@ -24,8 +24,11 @@ public class Game24 {
     public boolean isGame24Possible() {
         getAllPossibleOperatorCombinations();
 
-
-
+        for (List<Operators> operators : this.allPossibleOperations) {
+            if (evaluateAllOperations(new ArrayList<>(operands), operators, 0)) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -33,49 +36,64 @@ public class Game24 {
         for (Operators firstOperator : Operators.values()) {
             for (Operators secondOperator : Operators.values()) {
                 for (Operators thirdOperator : Operators.values()) {
-                    for (Operators forthOperator : Operators.values()) {
-                        allPossibleOperations.add(Arrays.asList(firstOperator, secondOperator, thirdOperator, forthOperator));
+                        allPossibleOperations.add(Arrays.asList(firstOperator, secondOperator, thirdOperator));
+                }
+            }
+        }
+    }
+
+    private boolean evaluateAllOperations(List<Integer> arguments, List<Operators> operators, int operationIndex) {
+        if (operationIndex > 2) return false;
+
+//        System.out.println("arguments = " + arguments + ", operators = " + operators + ", operationIndex = " + operationIndex);
+        for (int i=0; i < arguments.size(); i++) {
+            for (int j=0; j<arguments.size(); j++) {
+                if (i!=j) {
+                    int ans = calOperation(arguments.get(i), arguments.get(j), operators.get(operationIndex));
+                    int finalJ = j;
+                    int finalI = i;
+                    boolean res = evaluateAllOperations(IntStream
+                            .range(0, arguments.size() + 1)
+                            .filter(index -> index != finalI && index != finalJ)
+                            .map(index -> index == arguments.size() ? ans : arguments.get(index))
+                            .boxed()
+                            .collect(Collectors.toList()), operators, operationIndex + 1);
+
+                    if (res) return res;
+                    if (operationIndex == 2 && (ans == 24)) {
+                        return true;
                     }
                 }
             }
         }
-    }
-
-    private void evaluateAllOperations(List<Integer> arguments, List<Operators> operators, int operationIndex) {
-        for (int i=0; i<arguments.size(); i++) {
-            for (int j=0; j<arguments.size(); j++) {
-                if (i!=j) {
-                    int ans = calOperation(arguments.get(i), arguments.get(j), operators.get(operationIndex));
-                    evaluateAllOperations(IntStream
-                            .range(0, arguments.size())
-                            .filter(index -> index != i && index != j)
-                            .map(arguments::get)
-                            .collect(Collectors.toList()), operators, operationIndex++);
-);
-                }
-            }
-        }
+        return false;
     }
 
     int calOperation(int a, int b, Operators operator) {
         switch (operator) {
-            case plus -> {
+            case plus:
                 return a + b;
-            }
-            case minus -> {
+            case minus:
                 return a - b;
-            }
-            case multiply -> {
+            case multiply:
                 return a * b;
-            }
-            case divide -> {
+            case divide:
+                if (b == 0) {
+                    return -1000;
+                }
                 return a / b;
-            }
+            default:
+                return 0;
         }
-        return 0;
     }
 
     public enum Operators {
         plus, minus, divide, multiply
+    }
+
+
+    public static void main(String[] args) {
+        Game24 game24 = new Game24(Arrays.asList(8, 1, 6, 6));
+        System.out.println(game24.isGame24Possible());
     }
 }
