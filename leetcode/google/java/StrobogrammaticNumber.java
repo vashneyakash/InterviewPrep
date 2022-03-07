@@ -13,8 +13,21 @@ public class StrobogrammaticNumber {
     *
     * Watched videos for digit DB
     * https://www.youtube.com/watch?v=IjPGC8aN4vA
-    * https://www.youtube.com/watch?v=T5R6qZAp0u8
+    * https://www.youtube.com/watch?v=T5R6qZAp0u8   
     * https://www.youtube.com/watch?v=Ukp8SMJT6Ao
     * */
+
+    private final long upperLimit;
+    public StrobogrammaticNumber(long upperLimit) {
+        this.upperLimit = upperLimit;
+    }
+
+    public int calculateStrobogrammaticNumber() {
+        return 0;
+    }
+
+    public static void main(String[] args) {
+
+    }
 
 }
