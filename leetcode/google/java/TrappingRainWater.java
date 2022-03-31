@@ -1,7 +1,6 @@
 package google.java;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class TrappingRainWater {
     /*
@@ -17,14 +16,18 @@ public class TrappingRainWater {
     }
 
     public static void main(String[] args) {
-
+        TrappingRainWater a = new TrappingRainWater(Arrays.asList(0,1,0,2,1,0,1,3,2,1,2,1));
+        System.out.println(a.compute());
     }
 
     public int compute() {
         int sum = 0;
         for (int i = 0; i < bars.size(); i++) {
             if (i !=0 && i != (bars.size() - 1)) {
-                int leftMax = segmentTree.query(0, 0, );
+                int leftMax = segmentTree.query(0, 0, bars.size() - 1, 0, i -1);
+                int rightMax = segmentTree.query(0, 0, bars.size() - 1, i +1, bars.size() - 1);
+                int maxOverrflow = Math.max(Math.min(leftMax, rightMax) - bars.get(i), 0);
+                sum = sum + (maxOverrflow);
             }
         }
         return sum;
@@ -36,13 +39,15 @@ public class TrappingRainWater {
 
         SegmentTree(List<Integer> input) {
             this.size = input.size() * 2;
-            this.segmentTree = new ArrayList<>();
-            build(0, 0, size - 1, input);
+            this.segmentTree = new ArrayList<>(Collections.nCopies(input.size() * 2 + 1, 0));
+            build(0, 0, input.size() - 1, input);
         }
 
         private void build(int index, int si, int se, List<Integer> input) {
+            System.out.println("index = " + index + ", si = " + si + ", se = " + se + ", input = " + input);
             if (si == se) {
                 segmentTree.set(index, input.get(si));
+                return;
             }
             int mid = (si + se) / 2;
             build(2 * index + 1, si, mid, input);
@@ -51,7 +56,7 @@ public class TrappingRainWater {
         }
 
         public int query(int index, int si, int se, int qs, int qe) {
-            if (si <= qs && qe <= se) {
+            if (qs <= si && se <= qe) {
                 return segmentTree.get(index);
             } else if (se < qs || qe < si) {
                 return -1;
