@@ -38,8 +38,8 @@ public class TrappingRainWater {
         private final List<Integer> segmentTree;
 
         SegmentTree(List<Integer> input) {
-            this.size = input.size() * 2;
-            this.segmentTree = new ArrayList<>(Collections.nCopies(input.size() * 2 + 1, 0));
+            this.size = (int) Math.pow(2, Math.ceil(Math.log(input.size())/Math.log(2))) * 2;
+            this.segmentTree = new ArrayList<>(Collections.nCopies(this.size, 0));
             build(0, 0, input.size() - 1, input);
         }
 
