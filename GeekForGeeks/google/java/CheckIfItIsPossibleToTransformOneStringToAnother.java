@@ -1,5 +1,7 @@
 package GeekForGeeks.google.java;
 
+import debug.UsefulPrinting;
+
 public class CheckIfItIsPossibleToTransformOneStringToAnother {
     /*
     * Question - https://www.geeksforgeeks.org/check-possible-transform-one-string-another/
@@ -27,18 +29,14 @@ public class CheckIfItIsPossibleToTransformOneStringToAnother {
 
     private final String source;
     private final String target;
-    private final boolean dp[][];
+    private final Boolean dp[][];
     public CheckIfItIsPossibleToTransformOneStringToAnother(String source, String target) {
         this.source = source;
         this.target = target;
-        dp = new boolean[source.length()][source.length()];
+        dp = new Boolean[source.length()][source.length()];
     }
 
     public boolean isTransformable() {
-        if (this.source.length() != this.target.length()) {
-            return false;
-        }
-
         for (int i = 0; i < this.source.length(); i++) {
             for (int j = 0; j < this.target.length(); j++) {
                 if (isTransformable(i - 1,j - 1)
@@ -51,7 +49,8 @@ public class CheckIfItIsPossibleToTransformOneStringToAnother {
                 }
             }
         }
-        return dp[this.source.length() - 1][this.source.length() - 1];
+        UsefulPrinting.print2DArray(dp, 0, 0, source.length(), target.length());
+        return dp[this.source.length() - 1][this.target.length() - 1];
     }
 
     private boolean isTransformable(int i, int j) {
