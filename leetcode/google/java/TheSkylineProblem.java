@@ -19,5 +19,14 @@ public class TheSkylineProblem {
      *      currentPoint = point
     *   }
     * }
+    *
+    * Approach 2:
+    * Look from the side.
+    * 1. For every building store left and right line. Meaning (buildingId, height, LeftCord) & (buildingId, height, rightCord)
+    * 2. sort lines based on coordinate and height.
+    * 3. Iterate through each line
+    *   3.1 Determine if some part of the current line will be visible
+    *       viewPointHeight <= currentLine.Height
+    *       If yes store upper point of the line
     * */
 }
