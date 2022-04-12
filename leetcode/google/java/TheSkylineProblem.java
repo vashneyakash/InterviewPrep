@@ -49,10 +49,43 @@ public class TheSkylineProblem {
     }
 
     public List<Coordinates> computeSkyLine() {
-        List<BuildingsAxes> buildingsAxesList = buildingCoordinates.stream()
-                .map(buildCoord -> new BuildingsAxes(new Coordinates(buildCoord.startXCoordinate)));
-        TreeSet<Integer> overlappingBuildingsHeightSet = new TreeSet<>();
+        List<BuildingsAxes> buildingsAxesList = new ArrayList<>();
+        buildingCoordinates.forEach(buildingCoord -> {
+            buildingsAxesList.add(new BuildingsAxes(new Coordinates(buildingCoord.startXCoordinate(), buildingCoord.height()), true));
+            buildingsAxesList.add(new BuildingsAxes(new Coordinates(buildingCoord.startXCoordinate(), buildingCoord.height()), false));
+        });
 
+        buildingsAxesList.sort((b1, b2) -> {
+            if (b1.coordinates().x() == b2.coordinates().x()) {
+                if (b1.isStart() && b2.isStart()) {
+                    return Integer.compare(b1.coordinates().y(), b2.coordinates().y());
+                } else if (!b1.isStart() && !b2.isStart()) {
+                    return Integer.compare(b1.coordinates().y(), b2.coordinates().y());
+                } else {
+                    if (b1.isStart()) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+            } else {
+                return Integer.compare(b1.coordinates().x(), b2.coordinates().x());
+            }
+        });
+
+        List<Coordinates> result = new ArrayList<>();
+        TreeSet<Integer> overlappingBuildingsHeightSet = new TreeSet<>();
+        overlappingBuildingsHeightSet.add(0);
+        buildingsAxesList.forEach(b -> {
+            if (b.isStart()) {
+                int currentMax = overlappingBuildingsHeightSet.last();
+                overlappingBuildingsHeightSet.add(b.coordinates().y());
+                int newMax = overlappingBuildingsHeightSet.last();
+                if (currentMax != newMax) {
+
+                }
+            }
+        });
     }
 
     public static class BuildingCoordinates {
