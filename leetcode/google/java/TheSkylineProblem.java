@@ -48,24 +48,24 @@ public class TheSkylineProblem {
         this.buildingCoordinates = buildingCoordinates;
     }
 
-    public List<Coordinates> computeSkyLine() {
+    public List<List<Integer>> computeSkyLine() {
         List<BuildingsAxes> buildingsAxesList = new ArrayList<>();
         buildingCoordinates.forEach(buildingCoord -> {
             buildingsAxesList.add(new BuildingsAxes(new Coordinates(buildingCoord.startXCoordinate(), buildingCoord.height()), true));
-            buildingsAxesList.add(new BuildingsAxes(new Coordinates(buildingCoord.startXCoordinate(), buildingCoord.height()), false));
+            buildingsAxesList.add(new BuildingsAxes(new Coordinates(buildingCoord.endXCoordinate(), buildingCoord.height()), false));
         });
 
         buildingsAxesList.sort((b1, b2) -> {
             if (b1.coordinates().x() == b2.coordinates().x()) {
                 if (b1.isStart() && b2.isStart()) {
-                    return Integer.compare(b1.coordinates().y(), b2.coordinates().y());
+                    return Integer.compare(b2.coordinates().y(), b1.coordinates().y());
                 } else if (!b1.isStart() && !b2.isStart()) {
                     return Integer.compare(b1.coordinates().y(), b2.coordinates().y());
                 } else {
                     if (b1.isStart()) {
-                        return 1;
-                    } else {
                         return -1;
+                    } else {
+                        return 1;
                     }
                 }
             } else {
@@ -73,19 +73,33 @@ public class TheSkylineProblem {
             }
         });
 
-        List<Coordinates> result = new ArrayList<>();
-        TreeSet<Integer> overlappingBuildingsHeightSet = new TreeSet<>();
-        overlappingBuildingsHeightSet.add(0);
+//        System.out.println(buildingsAxesList);
+
+        List<List<Integer>> result = new ArrayList<>();
+        TreeMap<Integer, Integer> overlappingBuildingsHeightSet = new TreeMap<>();
+        overlappingBuildingsHeightSet.put(0, 1);
         buildingsAxesList.forEach(b -> {
             if (b.isStart()) {
-                int currentMax = overlappingBuildingsHeightSet.last();
-                overlappingBuildingsHeightSet.add(b.coordinates().y());
-                int newMax = overlappingBuildingsHeightSet.last();
+                int currentMax = overlappingBuildingsHeightSet.lastKey();
+                overlappingBuildingsHeightSet.put(b.coordinates().y(), Optional.ofNullable(overlappingBuildingsHeightSet.get(b.coordinates().y())).orElse(0) + 1);
+                int newMax = overlappingBuildingsHeightSet.lastKey();
                 if (currentMax != newMax) {
-
+                    result.add(Arrays.asList(b.coordinates().x(), newMax));
+                }
+            } else {
+                int currentMax = overlappingBuildingsHeightSet.lastKey();
+                if (overlappingBuildingsHeightSet.get(b.coordinates().y()) > 1) {
+                    overlappingBuildingsHeightSet.put(b.coordinates().y(), overlappingBuildingsHeightSet.get(b.coordinates().y()) -1);
+                } else {
+                    overlappingBuildingsHeightSet.remove(b.coordinates().y());
+                }
+                int newMax = overlappingBuildingsHeightSet.lastKey();
+                if (currentMax != newMax) {
+                    result.add(Arrays.asList(b.coordinates().x(), newMax));
                 }
             }
         });
+        return result;
     }
 
     public static class BuildingCoordinates {
@@ -112,7 +126,7 @@ public class TheSkylineProblem {
         }
     }
 
-    public static class BuildingsAxes {
+    public static class BuildingsAxes implements Comparator<BuildingsAxes> {
         private final Coordinates coordinates;
         private final boolean isStart;
 
@@ -127,6 +141,30 @@ public class TheSkylineProblem {
 
         public boolean isStart() {
             return isStart;
+        }
+
+        @Override
+        public int compare(BuildingsAxes b1, BuildingsAxes b2) {
+            if (b1.coordinates().x() == b2.coordinates().x()) {
+                if (b1.isStart() && b2.isStart()) {
+                    return Integer.compare(b1.coordinates().y(), b2.coordinates().y());
+                } else if (!b1.isStart() && !b2.isStart()) {
+                    return Integer.compare(b1.coordinates().y(), b2.coordinates().y());
+                } else {
+                    if (b1.isStart()) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+            } else {
+                return Integer.compare(b1.coordinates().x(), b2.coordinates().x());
+            }
+        }
+
+        @Override
+        public String toString() {
+            return String.format("{ coordinates=%s, isStart=%s }", this.coordinates, this.isStart);
         }
     }
 
@@ -146,5 +184,23 @@ public class TheSkylineProblem {
         public int y() {
             return y;
         }
+
+        @Override
+        public String toString() {
+            return String.format("{ x=%s, y=%s }", this.x, this.y);
+        }
+    }
+
+    public static void main(String[] args) {
+//        System.out.println(new TheSkylineProblem(Arrays.asList(new BuildingCoordinates(0,2,3),
+//                new BuildingCoordinates(2,5,3))).computeSkyLine());
+
+        System.out.println(new TheSkylineProblem(Arrays.asList(
+                new BuildingCoordinates(2,9,10),
+                new BuildingCoordinates(3,7,15),
+                new BuildingCoordinates(5,12,12),
+                new BuildingCoordinates(15,20,10),
+                new BuildingCoordinates(19,24,8)
+        )).computeSkyLine());
     }
 }
