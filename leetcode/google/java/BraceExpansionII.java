@@ -1,6 +1,7 @@
 package google.java;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BraceExpansionII {
     /*
@@ -16,6 +17,9 @@ public class BraceExpansionII {
     }
 
     List<String> evaluateExpr(String expression) {
+        if (isAtomicExpression(expression)) {
+            return Arrays.asList(expression);
+        }
         List<Expression> subExpr = getAllSubExpr(expression);
 
         List<SubExpressions> subSubExpressions = new ArrayList<>();
@@ -42,15 +46,9 @@ public class BraceExpansionII {
     }
 
     private List<Expression> getAllSubExpr(String expression) {
-        System.out.println(expression);
-        if (isAtomicExpression(expression)) {
-            System.out.println("result : " + new Expression(expression, Operator.union));
-            return Collections.singletonList(new Expression(expression, Operator.union));
-        } if (canSeparateByComma(expression)) {
-            System.out.println("result Comma : " + separateByComma(expression));
+        if (canSeparateByComma(expression)) {
             return separateByComma(expression);
         } else {
-            System.out.println("result Bracket : " + separateByBracket(expression));
             return separateByBracket(expression);
         }
     }
@@ -89,7 +87,7 @@ public class BraceExpansionII {
 
     private List<Expression> separateByBracket(String expression) {
         if (hasWrapperBraces(expression)) {
-            expression = expression.substring(1, expression.length() - 1);
+            return Arrays.asList(new Expression(expression.substring(1, expression.length() - 1), Operator.cartesian));
         }
         int openBrackets = 0;
         int expressionStart = 0;
@@ -176,6 +174,7 @@ public class BraceExpansionII {
     }
 
     public static void main(String[] args) {
-        System.out.println(new BraceExpansionII().evaluateExpr("{a,b}{c,{d,e}}"));
+        System.out.println(new BraceExpansionII().evaluateExpr("{a,b}{c,{d,e}}").stream().distinct().sorted().collect(Collectors.toList()));
+        System.out.println(new BraceExpansionII().evaluateExpr("{{a,z},a{b,c},{ab,z}}").stream().distinct().sorted().collect(Collectors.toList()));
     }
 }
