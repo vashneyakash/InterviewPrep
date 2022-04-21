@@ -2,6 +2,7 @@ package google.java;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class CountOfSmallerNumbersAfterSelf {
@@ -23,7 +24,11 @@ public class CountOfSmallerNumbersAfterSelf {
         List<NumberAndSmallerNumberCount> numberAndSmallerNumberCount = inputs.stream().map(NumberAndSmallerNumberCount::new).collect(Collectors.toList());
 
         mergeSort(0, inputs.size() -1, numberAndSmallerNumberCount);
-        return numberAndSmallerNumberCount.stream().map(NumberAndSmallerNumberCount::smallerNumberCount).collect(Collectors.toList());
+        Map<Integer, LinkedList<Integer>> countMap = new HashMap<>();
+        numberAndSmallerNumberCount.forEach(a -> {
+            countMap.computeIfAbsent(a.number(), __ -> new LinkedList<>()).add(a.smallerNumberCount());
+        });
+        return inputs.stream().map(a -> countMap.get(a).removeFirst()).collect(Collectors.toList());
     }
 
     private void mergeSort(int startIndex, int endIndex, List<NumberAndSmallerNumberCount> toBeSorted) {
@@ -40,8 +45,9 @@ public class CountOfSmallerNumbersAfterSelf {
         int ptr2 = mid+1;
         int secondHalfSize = endIndex - mid;
         while (ptr1 <= mid && ptr2 <= endIndex) {
-            if (toBeSorted.get(ptr1).number() < toBeSorted.get(ptr2).number()) {
-                toBeSorted.get(ptr1).increment(ptr2 - mid - 1);
+            if (toBeSorted.get(ptr1).number() <= toBeSorted.get(ptr2).number()) {
+                if (toBeSorted.get(ptr1).number() < toBeSorted.get(ptr2).number())
+                    toBeSorted.get(ptr1).increment(ptr2 - mid - 1);
                 temp.add(toBeSorted.get(ptr1));
                 ptr1++;
             } else {
@@ -103,8 +109,8 @@ public class CountOfSmallerNumbersAfterSelf {
 
     public static void main(String[] args) {
         System.out.println(new CountOfSmallerNumbersAfterSelf(Arrays.asList(5,2,6,1)).computeSmallerNumberCount());
-//        System.out.println(new CountOfSmallerNumbersAfterSelf(Arrays.asList(-1)).computeSmallerNumberCount());
-//        System.out.println(new CountOfSmallerNumbersAfterSelf(Arrays.asList(-1, -1)).computeSmallerNumberCount());
+        System.out.println(new CountOfSmallerNumbersAfterSelf(Arrays.asList(-1)).computeSmallerNumberCount());
+        System.out.println(new CountOfSmallerNumbersAfterSelf(Arrays.asList(-1, -1)).computeSmallerNumberCount());
     }
 }
 
