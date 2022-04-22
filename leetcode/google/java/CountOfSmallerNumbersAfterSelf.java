@@ -32,7 +32,7 @@ public class CountOfSmallerNumbersAfterSelf {
     }
 
     private void mergeSort(int startIndex, int endIndex, List<NumberAndSmallerNumberCount> toBeSorted) {
-        if (startIndex == endIndex || endIndex < startIndex) {
+        if (startIndex >= endIndex) {
             return;
         }
         int mid = (endIndex - startIndex)/2 + startIndex;
@@ -46,8 +46,7 @@ public class CountOfSmallerNumbersAfterSelf {
         int secondHalfSize = endIndex - mid;
         while (ptr1 <= mid && ptr2 <= endIndex) {
             if (toBeSorted.get(ptr1).number() <= toBeSorted.get(ptr2).number()) {
-                if (toBeSorted.get(ptr1).number() < toBeSorted.get(ptr2).number())
-                    toBeSorted.get(ptr1).increment(ptr2 - mid - 1);
+                toBeSorted.get(ptr1).increment(ptr2 - mid - 1);
                 temp.add(toBeSorted.get(ptr1));
                 ptr1++;
             } else {
