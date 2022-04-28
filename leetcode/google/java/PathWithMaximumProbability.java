@@ -50,14 +50,14 @@ public class PathWithMaximumProbability {
         while(!queue.isEmpty()) {
             Node node = queue.poll();
 
-            if (distance[node.nodeIndex()] == Double.MIN_VALUE) continue;
+            if (distance[node.nodeIndex()] == 0) continue;
 
             for (Routes neighbour: adjList.get(node.nodeIndex())) {
 
                 if (distance[neighbour.neighbour()] == 0
                         || (distance[node.nodeIndex()] * neighbour.cost()) > distance[neighbour.neighbour()]) {
-                    queue.add(new Node(source, distance[node.nodeIndex()] * neighbour.cost()));
-
+                    queue.add(new Node(neighbour.neighbour(), distance[node.nodeIndex()] * neighbour.cost()));
+                    distance[neighbour.neighbour()] = distance[node.nodeIndex()] * neighbour.cost();
                 }
             }
         }
