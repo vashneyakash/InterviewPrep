@@ -32,5 +32,40 @@ public class ReadNCharactersGivenRead4II {
             }
             return Math.min(charsToCopy, numberOfCharsToRead);
         }
+
+        int read4(Character[] buff) {
+            return 0;
+        }
     }
+
+    private static class BufferReader {
+        private Character[] buffer = new Character[4];
+        private int bufferPointer = 0;
+        private int charactersInBuffer = 0;
+        private boolean fileHasEnded = false;
+
+        public char readNextChar() {
+            if (fileHasEnded) {
+                throw new RuntimeException("File is ended");
+            }
+            if (bufferPointer < charactersInBuffer) {
+                bufferPointer++;
+                return buffer[bufferPointer - 1];
+            } else {
+                charactersInBuffer = read4(buffer);
+                if (charactersInBuffer == 0) {
+                    fileHasEnded = true;
+                    throw new RuntimeException("File is ended");
+                } else {
+                    bufferPointer++;
+                    return buffer[bufferPointer - 1];
+                }
+            }
+        }
+
+        int read4(Character[] buff) {
+            return 0;
+        }
+    }
+
 }
