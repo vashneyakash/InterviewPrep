@@ -19,7 +19,7 @@ public class stack {
         stack.clear();
 
         while (!stack.empty()) {
-            System.out.println("stack.pop() = " + stack.pop());
+            System.out.println("stack.pop() = " + stack.pop()); 
             System.out.println("stack.isEmpty() = " + stack.isEmpty());
         }
     }
