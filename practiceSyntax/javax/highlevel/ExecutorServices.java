@@ -1,5 +1,6 @@
 package javax.highlevel;
 
+import java.util.Random;
 import java.util.concurrent.*;
 
 public class ExecutorServices {
@@ -27,11 +28,19 @@ public class ExecutorServices {
         }
     }
 
+    public static Integer calPrime() {
+        return new Random().nextInt(50);
+    }
+
     public static void main(String[] args) {
         executorService.shutdown();
-
-        executorService.submit(new Task());
+        Future<?> future1 = executorService.submit(new Task());
+        Future<Integer> future2 = executorService.submit(new Task1());
+        Future<Integer> future3 = executorService.submit(ExecutorServices::calPrime);
+        executorService.execute(new Task());
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-        scheduledExecutorService.scheduleWithFixedDelay(new Task(), 1, 1 ,TimeUnit.DAYS);
+        ScheduledFuture<?> scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(new Task(), 1, 1, TimeUnit.DAYS);
+        scheduledExecutorService.scheduleAtFixedRate(new Task(), 1, 1, TimeUnit.DAYS);
+        ScheduledFuture<Integer> scheduledFuture1 = scheduledExecutorService.schedule(new Task1(), 1, TimeUnit.DAYS);
     }
 }
