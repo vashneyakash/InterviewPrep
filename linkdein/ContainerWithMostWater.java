@@ -12,13 +12,16 @@ public class ContainerWithMostWater {
     *       }
     *   }
     *
-    * Semi Optimal solution:
+    * Wrong solution:
     * find the minimum height
     * maxVolume = Math.max(maxVolume, minHeight * (rightBound - leftBound +1));
     * recurse for left half and right half
     *
-    * Optimal solution:
+    * Wrong solution:
     * Maintain a stack of all just greater elements from end of queue
+    *
+    * Correct Approach:
+    * Two pointer method
     * */
 
     public static int maxCapacity(int bars[]) {
@@ -42,7 +45,25 @@ public class ContainerWithMostWater {
         return maxRect;
     }
 
+    public static int maxCapacityV2(int bars[]) {
+        int left = 0;
+        int right = bars.length - 1;
+        int maxRect = 0;
+
+        while(left < right) {
+            maxRect = Math.max(maxRect, Math.min(bars[left], bars[right]) * (right - left));
+            if (bars[left] < bars[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        return maxRect;
+    }
+
     public static void main(String[] args) {
         System.out.println("ContainerWithMostWater.maxCapacity(new int[] {1,8,6,2,5,4,8,3,7}) = " + ContainerWithMostWater.maxCapacity(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7}));
+        System.out.println("ContainerWithMostWater.maxCapacity(new int[] {1,8,6,2,5,4,8,3,7}) = " + ContainerWithMostWater.maxCapacityV2(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7}));
     }
 }
