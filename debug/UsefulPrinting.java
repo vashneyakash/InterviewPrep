@@ -13,4 +13,15 @@ public class UsefulPrinting {
             System.out.println();
         }
     }
+
+    public static <T> void print1DArray(T[] arr) {
+        print1DArray(arr, 0, arr.length);
+    }
+
+    public static <T> void print1DArray(T[] arr, int start, int end) {
+        for (int i = start; i < end && i < arr.length; i++) {
+                System.out.printf("[%s]:%s ", i, arr[i]);
+        }
+        System.out.println();
+    }
 }
