@@ -14,22 +14,26 @@ public class SearchInRotatedSortedArray {
 
         while (lo <= hi) {
             int mid = (lo + hi)/2;
-            if ((mid == 0 || arr[mid - 1] < arr[mid]) && (mid < (arr.length -1) || arr[mid] < arr[mid + 1])) {
+            System.out.println("mid = " + mid + " " + "lo = " + lo + " " + "hi = " + hi);
+            if ((mid == 0 || arr[mid - 1] > arr[mid]) && (mid == (arr.length -1) || arr[mid] < arr[mid + 1])) {
                 return mid;
+            } else if (arr[mid] < arr[lo]) {
+                hi = mid - 1;
+            } else {
+                lo = mid + 1;
             }
-
-            if ()
         }
+        return 0;
     }
 
     public static int findIndex(int[] arr) {
         int n = arr.length;
-        int offset =
+        int offset = offsetRotationIndex(arr);
 
         return 0;
     }
 
     public static void main(String[] args) {
-
+        System.out.println(offsetRotationIndex(new int[]{3,4,5,0,1,2}));
     }
 }
