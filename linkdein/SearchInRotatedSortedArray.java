@@ -11,29 +11,69 @@ public class SearchInRotatedSortedArray {
         if (arr[0] < arr[arr.length - 1]) return 0;
         int lo = 0;
         int hi = arr.length - 1;
+        int n = arr.length;
 
         while (lo <= hi) {
             int mid = (lo + hi)/2;
-            System.out.println("mid = " + mid + " " + "lo = " + lo + " " + "hi = " + hi);
-            if ((mid == 0 || arr[mid - 1] > arr[mid]) && (mid == (arr.length -1) || arr[mid] < arr[mid + 1])) {
+//            System.out.println("mid = " + mid + " " + "lo = " + lo + " " + "hi = " + hi);
+            if (arr[(mid - 1 + n)%n] > arr[mid] && arr[mid] < arr[(mid + 1)%n]) {
                 return mid;
             } else if (arr[mid] < arr[lo]) {
-                hi = mid - 1;
+                hi = mid;
             } else {
-                lo = mid + 1;
+                lo = mid;
             }
         }
         return 0;
     }
 
-    public static int findIndex(int[] arr) {
-        int n = arr.length;
-        int offset = offsetRotationIndex(arr);
+    public static int findIndexWithOffset(int index, int offset, int n) {
+        return (index + offset)%n;
+    }
+    public static int binarySearchWithOffset(int[] arr, int val, int offset) {
+        int lo = 0;
+        int hi = arr.length -1;
 
-        return 0;
+        while (lo <= hi) {
+            int mid = (lo + hi)/2;
+            int actualIndex = findIndexWithOffset(mid, offset, arr.length);
+//            System.out.println("mid = " + mid + " actualIndex = " + actualIndex + " lo = " + lo + " hi = " + hi);
+            if (arr[actualIndex] == val) {
+                return actualIndex;
+            } else if (arr[actualIndex] > val) {
+                hi = mid -1;
+            } else {
+                lo = mid + 1;
+            }
+        }
+
+        return -1;
+    }
+
+    public static int findIndex(int[] arr, int val) {
+        int offset = offsetRotationIndex(arr);
+//        System.out.println("offset = " + offset);
+        return binarySearchWithOffset(arr, val, offset);
     }
 
     public static void main(String[] args) {
         System.out.println(offsetRotationIndex(new int[]{3,4,5,0,1,2}));
+        System.out.println(offsetRotationIndex(new int[]{10, 12, 14, 15, 20, 0, 1, 9}));
+        System.out.println(offsetRotationIndex(new int[]{10, 12, 14, 15, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9}));
+
+        System.out.println("---------------");
+        System.out.println(findIndex(new int[]{3,4,5,0,1,2}, 3));
+        System.out.println(findIndex(new int[]{3,4,5,0,1,2}, 4));
+        System.out.println(findIndex(new int[]{3,4,5,0,1,2}, 5));
+        System.out.println(findIndex(new int[]{3,4,5,0,1,2}, 0));
+        System.out.println(findIndex(new int[]{3,4,5,0,1,2}, 1));
+        System.out.println(findIndex(new int[]{3,4,5,0,1,2}, 2));
+
+        System.out.println("++++++++++++++++");
+        System.out.println(findIndex(new int[]{10, 12, 14, 15, 20, 0, 1, 9}, 14));
+        System.out.println(findIndex(new int[]{10, 12, 14, 15, 20, 0, 1, 9}, 1));
+        System.out.println(findIndex(new int[]{10, 12, 14, 15, 20, 0, 1, 9}, 12));
+        System.out.println(findIndex(new int[]{10, 12, 14, 15, 20, 0, 1, 9}, 9));
+        System.out.println(findIndex(new int[]{10, 12, 14, 15, 20, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, 15));
     }
 }
