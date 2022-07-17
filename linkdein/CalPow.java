@@ -1,9 +1,11 @@
 package linkdein;
 
+import java.util.Random;
 import java.util.UUID;
 
 public class CalPow {
     // We can approximate the value by squaring the value and getting next digit
+    // NO PROGRESS
 
     public static double raiseByPower(double num, int pow) {
         double res = 1;
